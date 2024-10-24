@@ -61,10 +61,10 @@ export default function AttendantPage() {
         <Video ref={myVideoRef} />
         <Video ref={remoteVideoRef} />
       </div>
-      <div>
-        <button onClick={createPeer}>Criar link</button>
+      <div className="gap-2">
+        <button className="border p-1 w-40 bg-green-400 rounded-md text-xl font-semibold" onClick={createPeer}>Criar link</button>
+        <button className="border p-1 w-40  bg-red-400 rounded-md text-xl font-semibold" onClick={handleConnect}>Atender</button>
       </div>
-      <button onClick={handleConnect}>Atender</button>
     </div>
   );
 }

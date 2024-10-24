@@ -59,7 +59,7 @@ export default function ClientPage() {
         <Video ref={remoteVideoRef} />
       </div>
       <div>
-        <button onClick={connectPeer}>Entrar na fila</button>
+        <button className="border p-1 w-40 bg-green-400 rounded-md text-xl font-semibold" onClick={connectPeer}>Entrar na fila</button>
       </div>
     </div>
   );
