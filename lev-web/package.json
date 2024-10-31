@@ -1,0 +1,47 @@
+{
+  "name": "lev-web",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@ffmpeg/ffmpeg": "^0.12.10",
+    "@ffmpeg/util": "^0.12.1",
+    "@prisma/client": "^5.21.1",
+    "@radix-ui/react-label": "^2.1.0",
+    "@radix-ui/react-separator": "^1.1.0",
+    "@radix-ui/react-slot": "^1.1.0",
+    "@types/uuid": "^10.0.0",
+    "clsx": "^2.1.1",
+    "formidable": "^3.5.2",
+    "lucide-react": "^0.453.0",
+    "multer": "^1.4.5-lts.1",
+    "next": "15.0.1",
+    "next-connect": "^1.0.0",
+    "peerjs": "^1.5.4",
+    "react": "19.0.0-rc-69d4b800-20241021",
+    "react-dom": "19.0.0-rc-69d4b800-20241021",
+    "simple-peer": "^9.11.1",
+    "socket.io-client": "^4.8.1",
+    "tailwind-merge": "^2.5.4",
+    "tailwindcss-animate": "^1.0.7",
+    "uuid": "^11.0.2"
+  },
+  "devDependencies": {
+    "@types/formidable": "^3.4.5",
+    "@types/multer": "^1.4.12",
+    "@types/node": "^20",
+    "@types/react": "^18",
+    "@types/react-dom": "^18",
+    "@types/simple-peer": "^9.11.8",
+    "eslint": "^8",
+    "eslint-config-next": "15.0.1",
+    "postcss": "^8",
+    "tailwindcss": "^3.4.1",
+    "typescript": "^5"
+  }
+}
