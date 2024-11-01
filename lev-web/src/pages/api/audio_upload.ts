@@ -12,12 +12,8 @@ export const config = {
 };
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-  res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
-  res.setHeader('Pragma', 'no-cache');
-  res.setHeader('Expires', '0');
-  res.setHeader('Surrogate-Control', 'no-store');
 
-  if (req.method === 'POST') {
+  if (req.method === 'GET') {
     const uploadDir = path.join(process.cwd(), 'public', 'temp', 'uploads');
     const form = formidable({
       uploadDir,
@@ -49,7 +45,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       });
     });
   } else {
-    res.setHeader('Allow', ['POST']);
+    res.setHeader('Allow', ['GET']);
     return res.status(405).json({ message: 'Method not allowed' });
   }
 };
