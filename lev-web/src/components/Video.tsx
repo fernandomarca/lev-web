@@ -41,10 +41,10 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({ stream, ...rest }) => 
       formData.append('audio', audioFile, fileName);
 
       // enviar para agente
-      const _result = await fetch('/api/upload_audio', {
-        method: 'POST',
-        body: formData
-      });
+      // const _result = await fetch('/api/send_audio', {
+      //   method: 'POST',
+      //   body: formData
+      // });
 
       audioChunksRef.current = [];
       mediaRecorder.start();
