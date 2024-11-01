@@ -48,11 +48,11 @@ export default function ClientPage() {
         const fileName = `recording-${Date.now()}.mp3`;
         formData.append('audio', audioFile, fileName);
 
-        //enviar para agente
-        // const _result = await fetch('/api/upload_audio', {
-        //   method: 'POST',
-        //   body: formData
-        // });
+        // enviar para agente
+        const _result = await fetch('/api/upload_audio', {
+          method: 'POST',
+          body: formData
+        });
 
         audioChunksRef.current = [];
         mediaRecorder.start();
@@ -103,19 +103,6 @@ export default function ClientPage() {
     }
   }, [to_play, isPlaying, hasInitialAudio, play_audio]);
 
-  const build_peer = async () => {
-    try {
-      const new_peer = await new PeerBuilder().setOnError(() => { console.log("error") }).build();
-      console.log("create", new_peer)
-    } catch (e) {
-      console.log("error", e)
-    }
-  }
-
-  useEffect(() => {
-    build_peer()
-  }, [])
-
   const connectPeer = async () => {
     const newPeer = new SimplePeer({
       initiator: false,
@@ -158,6 +145,7 @@ export default function ClientPage() {
     <div>
       <div>
         <Video ref={myVideoRef} />
+        {/* <image src="robo" /> */}
         <Video ref={remoteVideoRef} />
         <audio
           controls

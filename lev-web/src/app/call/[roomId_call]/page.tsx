@@ -3,7 +3,9 @@
 
 import { VideoPlayer } from "@/components/Video";
 import { RoomContext, RoomContextProps } from "@/context/roomContext";
-import { use, useContext, useEffect } from "react";
+import { use, useCallback, useContext, useEffect, useRef, useState } from "react";
+import Image from 'next/image';
+import PermissionModal from "@/components/PermissionModal";
 
 interface RoomPageProps {
   params: Promise<{ roomId_call: string }>
@@ -11,22 +13,102 @@ interface RoomPageProps {
 
 export default function RoomCallPage({ params }: RoomPageProps) {
   const { roomId_call } = use(params);
+  const { ws, me, peers } = useContext(RoomContext) as RoomContextProps;
 
-  const { ws, me, stream, peers } = useContext(RoomContext) as RoomContextProps;
+  const [isPlaying, setIsPlaying] = useState(false);
+  const audioRef = useRef<HTMLAudioElement>(null);
+  const [to_play, setToPlay] = useState<Set<string>>(new Set<string>(['/temp/silence.mp3']));
+  const [played, setPlayed] = useState<Set<string>>(new Set<string>([]));
+  const [hasInitialAudio, setHasInitialAudio] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const load_audio_files = useCallback(async () => {
+    const response = await fetch('/api/files');
+    const data: { files: string[] } = await response.json();
+    data.files.forEach((file) => {
+      if (!to_play.has(file)) {
+        setToPlay(new Set(to_play.add(file)));
+      }
+    });
+  }, [to_play]);
+
+  const play_audio = useCallback(async () => {
+    if (isPlaying) {
+      return;
+    }
+    const audioQueue = Array.from(to_play).filter(file => !played.has(file));
+    if (audioRef.current && audioQueue.length > 0) {
+      const file = audioQueue.shift() as string;
+      audioRef.current.src = file;
+      audioRef.current.play();
+      setIsPlaying(true);
+      setPlayed(new Set(played.add(file)));
+      fetch('/api/delete_played_audio', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ file_name: file })
+      })
+    };
+  }, [isPlaying, played, to_play]);
 
   useEffect(() => {
-    if (me) ws.emit('join-room-call', { roomId: roomId_call, peerId: me.id });
+    if (me) {
+      ws.emit('join-room-call', { roomId: roomId_call, peerId: me.id });
+    }
   }, [me, roomId_call, ws])
+
+  useEffect(() => {
+    setInterval(() => {
+      load_audio_files()
+    }, 5000)
+  }, [load_audio_files])
+
+  useEffect(() => {
+    if (hasInitialAudio) {
+      play_audio()
+    }
+  }, [hasInitialAudio, play_audio]);
+
+  useEffect(() => {
+    ws.on('get-users', ({ participants }: { participants: string[] }) => {
+      if (participants.length >= 2 && !isModalOpen) {
+        setHasInitialAudio(true);
+      }
+    });
+  }, [isModalOpen, play_audio, ws])
+
+  function handleEnded() {
+    setIsPlaying(false);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setHasInitialAudio(true);
+  };
+
   return (
     <div>
-      <h1>{roomId_call}</h1>
+      <PermissionModal isOpen={isModalOpen} onRequestClose={closeModal} />
       <div className="grid grid-cols-4 gap-4">
-
-        <VideoPlayer stream={stream} autoPlay />
-
-        {Object.entries(peers).map(([peerId, peer]) => (
-          <VideoPlayer key={peerId} stream={peer.stream} autoPlay />
-        ))}
+        {/* <VideoPlayer stream={stream} autoPlay /> */}
+        <div className="flex col-span-2 justify-end py-9 ">
+          <Image width={190} height={180} src="/atendante.png" alt="" />
+        </div>
+        <div className="flex col-span-2 justify-start">
+          {Object.entries(peers).map(([peerId, peer]) => (
+            <VideoPlayer key={peerId} stream={peer.stream} autoPlay />
+          ))}
+        </div>
+        <div>
+          <audio
+            controls
+            id="audio"
+            ref={audioRef}
+            onEnded={handleEnded}
+          />
+        </div>
       </div>
     </div>
   );
