@@ -1,0 +1,9 @@
+services:
+  app:
+    build:
+      context: "./lev-web"
+      dockerfile: Dockerfile
+    container_name: app-next
+    ports:
+      - "3000:3000"
+    restart: unless-stopped
