@@ -1,7 +1,7 @@
 "use client"
 
 import { CreateCallButton } from "@/components/CreateCallButton";
-import { RoomContext, RoomContextProps } from "@/context/roomContext";
+import { RoomContext, RoomContextProps, useRoom } from "@/context/roomContext";
 import React, { useContext, useEffect, useState } from "react";
 
 export default function CreateCallPage() {
@@ -9,7 +9,7 @@ export default function CreateCallPage() {
   const [clientName, setClientName] = useState<string>('');
   const [link, setLik] = useState<string>('');
 
-  const { ws } = useContext(RoomContext) as RoomContextProps;
+  const { ws } = useRoom();
 
   useEffect(() => {
     ws.on('room-created', ({ roomId }) => {

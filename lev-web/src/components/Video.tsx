@@ -38,13 +38,21 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({ stream, ...rest }) => 
 
       const formData = new FormData();
       const fileName = `recording-${Date.now()}.mp3`;
-      formData.append('audio', audioFile, fileName);
+      formData.append('file', audioFile, fileName);
 
       // enviar para agente
       // const _result = await fetch('/api/send_audio', {
       //   method: 'POST',
       //   body: formData
       // });
+      const token = "c4b9271a-6f05-4e09-a41a-520c16ce6205";
+      const _result = await fetch('http://localhost:8000/save_audio/', {
+        method: 'POST',
+        body: formData,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
       audioChunksRef.current = [];
       mediaRecorder.start();

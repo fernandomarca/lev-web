@@ -7,3 +7,21 @@ services:
     ports:
       - "3000:3000"
     restart: unless-stopped
+  
+  ws-server:
+    build:
+      context: "./ws-server"
+      dockerfile: Dockerfile
+    container_name: ws-server
+    ports:
+      - "8080:8080"
+    restart: unless-stopped
+
+  peerjs-server:
+    build:
+      context: "./peerjs-server"
+      dockerfile: Dockerfile
+    container_name: peerjs-server
+    ports:
+      - "9000:9000"
+    restart: unless-stopped

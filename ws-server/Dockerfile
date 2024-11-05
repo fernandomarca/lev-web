@@ -16,11 +16,14 @@ FROM node:20.18-alpine
 
 WORKDIR /app
 
-COPY --from=builder /app /app
+COPY --from=builder /app/dist ./dist
+COPY --from=builder /app/package*.json ./
+
+RUN npm install --production
 
 EXPOSE 8080
 
 ENV PORT=8080
 ENV HOSTNAME="0.0.0.0"
 
-CMD ["node", "server.js"]
+CMD ["node", "dist/server.js"]

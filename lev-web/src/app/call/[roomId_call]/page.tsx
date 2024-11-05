@@ -15,30 +15,22 @@ export default function RoomCallPage({ params }: RoomPageProps) {
   const { roomId_call } = use(params);
   const { ws, me, peers } = useContext(RoomContext) as RoomContextProps;
 
-  const [isPlaying, setIsPlaying] = useState(false);
   const audioRef = useRef<HTMLAudioElement>(null);
+  const [isPlaying, setIsPlaying] = useState(false);
   const [to_play, setToPlay] = useState<Set<string>>(new Set<string>(['/temp/silence.mp3']));
   const [played, setPlayed] = useState<Set<string>>(new Set<string>([]));
   const [hasInitialAudio, setHasInitialAudio] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const load_audio_files = useCallback(async () => {
-    const response = await fetch('/api/files');
-    const data: { files: string[] } = await response.json();
-    data.files.forEach((file) => {
-      if (!to_play.has(file)) {
-        setToPlay(new Set(to_play.add(file)));
-      }
-    });
-  }, [to_play]);
-
   const play_audio = useCallback(async () => {
     if (isPlaying) {
+      console.log("audio is already playing")
       return;
     }
     const audioQueue = Array.from(to_play).filter(file => !played.has(file));
     if (audioRef.current && audioQueue.length > 0) {
       const file = audioQueue.shift() as string;
+      console.log("audio-file", file)
       audioRef.current.src = file;
       audioRef.current.play();
       setIsPlaying(true);
@@ -51,7 +43,21 @@ export default function RoomCallPage({ params }: RoomPageProps) {
         body: JSON.stringify({ file_name: file })
       })
     };
-  }, [isPlaying, played, to_play]);
+  }, [played, to_play]);
+
+  const load_audio_files = useCallback(async () => {
+    const response = await fetch('/api/files');
+    const data: { files: string[] } = await response.json();
+    console.log(to_play)
+    data.files.forEach((file) => {
+      if (!to_play.has(file)) {
+        setToPlay(new Set(to_play.add(file)));
+      }
+    });
+    play_audio()
+  }, [play_audio, to_play]);
+
+
 
   useEffect(() => {
     if (me) {
@@ -103,6 +109,7 @@ export default function RoomCallPage({ params }: RoomPageProps) {
         </div>
         <div>
           <audio
+            hidden
             controls
             id="audio"
             ref={audioRef}
