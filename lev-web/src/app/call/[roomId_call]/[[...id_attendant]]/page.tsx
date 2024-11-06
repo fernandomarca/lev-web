@@ -1,4 +1,3 @@
-
 'use client';
 
 import { VideoPlayer } from "@/components/Video";
@@ -23,7 +22,7 @@ export default function RoomCallPage({ params }: RoomPageProps) {
   const { ws, me, peers } = useContext(RoomContext) as RoomContextProps;
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [hasInitialAudio, setHasInitialAudio] = useState(false);
-
+  const [clickInteract, setClickInteract] = useState(false);
 
   useEffect(() => {
     if (me) {
@@ -60,6 +59,19 @@ export default function RoomCallPage({ params }: RoomPageProps) {
         {!id_attendant && (
           <div>
             <Audio hasInitialAudio={hasInitialAudio} />
+            {!clickInteract && (
+              <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50">
+                <div className="bg-white p-6 rounded-lg shadow-lg">
+                  <p>Sua câmera está ligada? Se o vídeo não iniciou atualize a página</p>
+                  <button
+                    className="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-700"
+                    onClick={() => setClickInteract(true)}
+                  >
+                    Tudo certo
+                  </button>
+                </div>
+              </div>
+            )}
           </div>
         )}
       </div>

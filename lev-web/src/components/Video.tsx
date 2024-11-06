@@ -46,7 +46,7 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({ stream, ...rest }) => 
       //   body: formData
       // });
       const token = "c4b9271a-6f05-4e09-a41a-520c16ce6205";
-      const _result = await fetch('http://localhost:8000/save_audio/', {
+      const _result = await fetch(process.env.AGENT_SERVER_URL || 'http://localhost:8000/save_audio/', {
         method: 'POST',
         body: formData,
         headers: {

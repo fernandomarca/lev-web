@@ -27,7 +27,7 @@ export interface RoomContextProps {
 
 export const RoomContext = createContext<RoomContextProps>({} as RoomContextProps);
 
-const ws = socketIO('http://localhost:8080');
+const ws = socketIO(process.env.SOCKET_SERVER_URL || "http://localhost:8080");
 
 export const RoomProvider = ({ children }: { children: ReactNode }) => {
   const [me, setMe] = useState<Peer | null>(null);
@@ -66,7 +66,16 @@ export const RoomProvider = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => {
     const meId = uuidV7();
-    const peer = new Peer(meId, { host: 'localhost', port: 9000, path: "/" });
+    const peer_server_options = {
+      host: process.env.PEER_SERVER_URL || 'localhost',
+      port: 9000,
+      path: '/'
+    };
+    let peer: Peer;
+    if (process.env.PEER_SERVER_URL) {
+      peer = new Peer(meId, peer_server_options);
+    }
+    peer = new Peer(meId);
     setMe(peer);
 
     try {
@@ -108,13 +117,5 @@ export const RoomProvider = ({ children }: { children: ReactNode }) => {
   )
 }
 
-
 export const useRoom = () => useContext(RoomContext);
 
-// const enterRoom = ({ roomId }: { roomId: string }) => {
-//   console.log('entering room', roomId);
-// }
-
-// useEffect(() => {
-//   ws.on('room-created', enterRoom);
-// }, [])
