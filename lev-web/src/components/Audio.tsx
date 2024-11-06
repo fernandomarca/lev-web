@@ -20,13 +20,15 @@ export function Audio({ hasInitialAudio }: { hasInitialAudio: boolean }) {
       audioRef.current.play();
       setIsPlaying(true);
       setPlayed(new Set(played.add(file)));
-      fetch('/api/delete_played_audio', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ file_name: file })
-      })
+      setTimeout(() => {
+        fetch('/api/delete_played_audio', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ file_name: file })
+        })
+      }, 1000);
     };
   }, [isPlaying, played, to_play]);
 
