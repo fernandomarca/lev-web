@@ -1,28 +1,25 @@
 "use client";
 
-import { RoomContextProps, useRoom } from "@/context/roomContext";
-import { useCallback, useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
-export function Audio({ roomId_call }: { roomId_call: string }) {
+export function Audio({ hasInitialAudio }: { hasInitialAudio: boolean }) {
   const audioRef = useRef<HTMLAudioElement>(null);
-  const { ws, audioState } = useRoom() as RoomContextProps;
-
-  console.log("audioState component Audio", audioState)
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [to_play, setToPlay] = useState<Set<string>>(new Set<string>(['/temp/silence.mp3']));
+  const [played, setPlayed] = useState<Set<string>>(new Set<string>([]));
 
   const play_audio = useCallback(async () => {
-    if (audioState?.isPlaying) {
+    if (isPlaying) {
       console.log("audio is already playing")
       return;
     }
-    if (audioRef.current && audioState.audioQueue.length > 0) {
-      const file = audioState.audioQueue.shift() as string;
-      console.log("audio-file", file)
+    const audioQueue = Array.from(to_play).filter(file => !played.has(file));
+    if (audioRef.current && audioQueue.length > 0) {
+      const file = audioQueue.shift() as string;
       audioRef.current.src = file;
       audioRef.current.play();
-      // setIsPlaying(true);
-      audioState.played.push(file);
-      ws.emit('audio_changed', { roomId_call, isPlaying: true, to_play: audioState.to_play, played: audioState.played, hasInitialAudio: audioState.hasInitialAudio });
-
+      setIsPlaying(true);
+      setPlayed(new Set(played.add(file)));
       fetch('/api/delete_played_audio', {
         method: 'POST',
         headers: {
@@ -31,21 +28,18 @@ export function Audio({ roomId_call }: { roomId_call: string }) {
         body: JSON.stringify({ file_name: file })
       })
     };
-  }, [audioState.audioQueue, audioState.hasInitialAudio, audioState?.isPlaying, audioState.played, audioState.to_play, roomId_call, ws]);
+  }, [isPlaying, played, to_play]);
 
   const load_audio_files = useCallback(async () => {
     const response = await fetch('/api/files');
     const data: { files: string[] } = await response.json();
     data.files.forEach((file) => {
-      console.log("audioState.to_play", audioState.to_play)
-      const file_include = audioState.to_play.includes(file);
-      if (audioState && !file_include) {
-        audioState.to_play.push(file);
-        ws.emit('audio_changed', { roomId_call, isPlaying: audioState.isPlaying, to_play: audioState.to_play, played: audioState.played, hasInitialAudio: audioState.hasInitialAudio });
+      if (!to_play.has(file)) {
+        setToPlay(new Set(to_play.add(file)));
       }
     });
-    play_audio()
-  }, [audioState, play_audio, roomId_call, ws]);
+    // play_audio()
+  }, [to_play]);
 
   useEffect(() => {
     setInterval(() => {
@@ -54,18 +48,18 @@ export function Audio({ roomId_call }: { roomId_call: string }) {
   }, [load_audio_files])
 
   useEffect(() => {
-    if (audioState?.hasInitialAudio) {
-      console.log("hasInitialAudio played", audioState?.hasInitialAudio)
+    if (hasInitialAudio) {
       play_audio()
     }
-  }, [audioState?.hasInitialAudio, play_audio]);
+  }, [hasInitialAudio, play_audio]);
 
   function handleEnded() {
-    // setIsPlaying(false);
-    ws.emit('audio_changed', { roomId_call, isPlaying: false, to_play: audioState?.to_play, played: audioState?.played, hasInitialAudio: audioState?.hasInitialAudio });
+    setIsPlaying(false);
   };
+
   return (
     <audio
+      hidden
       controls
       id="audio"
       ref={audioRef}

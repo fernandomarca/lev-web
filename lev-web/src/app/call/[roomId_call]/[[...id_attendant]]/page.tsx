@@ -2,22 +2,28 @@
 'use client';
 
 import { VideoPlayer } from "@/components/Video";
-import { useRoom } from "@/context/roomContext";
-import { use, useEffect, useState } from "react";
+import { RoomContext, RoomContextProps } from "@/context/roomContext";
+import { use, useContext, useEffect, useState } from "react";
 import Image from 'next/image';
 import PermissionModal from "@/components/PermissionModal";
 import { Audio } from "@/components/Audio";
 
 interface RoomPageProps {
-  params: Promise<{ roomId_call: string }>
+  params: Promise<{
+    roomId_call: string,
+    id_attendant?: string
+  }>
 }
 
-export default function RoomCallPage2({ params }: RoomPageProps) {
-  // const { roomId_call } = use(params);
-  const roomId_call = "0192f985-a0ff-708b-bf16-69aa47f002ab";
-  const [isModalOpen, setIsModalOpen] = useState(false);
+export default function RoomCallPage({ params }: RoomPageProps) {
+  const { id_attendant } = use(params);
 
-  const { ws, me, peers, audioState, participants } = useRoom();
+  const roomId_call = "0192f985-a0ff-708b-bf16-69aa47f002ab";
+
+  const { ws, me, peers } = useContext(RoomContext) as RoomContextProps;
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [hasInitialAudio, setHasInitialAudio] = useState(false);
+
 
   useEffect(() => {
     if (me) {
@@ -25,18 +31,18 @@ export default function RoomCallPage2({ params }: RoomPageProps) {
     }
   }, [me, roomId_call, ws])
 
+  useEffect(() => {
+    ws.on('get-users', ({ participants }: { participants: string[] }) => {
+      if (participants.length >= 2 && !isModalOpen) {
+        setHasInitialAudio(true);
+      }
+    });
+  }, [isModalOpen, ws]);
+
   const closeModal = () => {
     setIsModalOpen(false);
-    // setHasInitialAudio(true);
-    ws.emit('audio_changed', { roomId_call, isPlaying: audioState?.isPlaying, to_play: audioState?.to_play, played: audioState?.played, hasInitialAudio: true });
+    setHasInitialAudio(true);
   };
-
-  useEffect(() => {
-    if (participants.length >= 2 && !isModalOpen) {
-      // setHasInitialAudio(true);
-      ws.emit('audio_changed', { roomId_call, isPlaying: audioState?.isPlaying, to_play: audioState?.to_play, played: audioState?.played, hasInitialAudio: true });
-    }
-  }, [audioState?.isPlaying, audioState?.played, audioState?.to_play, isModalOpen, participants.length, ws])
 
   return (
     <div>
@@ -51,9 +57,11 @@ export default function RoomCallPage2({ params }: RoomPageProps) {
             <VideoPlayer key={peerId} stream={peer.stream} autoPlay />
           ))}
         </div>
-        <div>
-          <Audio roomId_call={roomId_call} />
-        </div>
+        {!id_attendant && (
+          <div>
+            <Audio hasInitialAudio={hasInitialAudio} />
+          </div>
+        )}
       </div>
     </div>
   );
