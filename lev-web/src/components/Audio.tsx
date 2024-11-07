@@ -17,6 +17,7 @@ export function Audio({ hasInitialAudio }: { hasInitialAudio: boolean }) {
     if (audioRef.current && audioQueue.length > 0) {
       const file = audioQueue.shift() as string;
       audioRef.current.src = file;
+      audioRef.current.load();
       audioRef.current.play();
       setIsPlaying(true);
       setPlayed(new Set(played.add(file)));
@@ -61,7 +62,6 @@ export function Audio({ hasInitialAudio }: { hasInitialAudio: boolean }) {
 
   return (
     <audio
-      hidden
       controls
       id="audio"
       ref={audioRef}

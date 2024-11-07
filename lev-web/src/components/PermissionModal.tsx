@@ -40,7 +40,7 @@ const PermissionModal = ({ isOpen, onRequestClose }: PermissionModalProps) => {
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75">
-      <div className="bg-white p-6 rounded shadow-lg">
+      <div className="bg-white p-6 rounded shadow-lg text-black">
         <h2 className="text-xl font-bold mb-4">Solicitação de Permissões</h2>
         <p className="mb-4">Precisamos de sua permissão para acessar o microfone e a câmera.</p>
         <div className="flex justify-center">

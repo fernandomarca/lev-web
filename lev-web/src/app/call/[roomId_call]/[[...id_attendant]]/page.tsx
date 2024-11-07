@@ -44,14 +44,13 @@ export default function RoomCallPage({ params }: RoomPageProps) {
   };
 
   return (
-    <div>
+    <div className="min-h-screen bg-gradient-to-t from-gray-700 via-gray-500 to-black text-white">
       <PermissionModal isOpen={isModalOpen} onRequestClose={closeModal} />
-      <div className="grid grid-cols-4 gap-4">
-        {/* <VideoPlayer stream={stream} autoPlay /> */}
-        <div className="flex col-span-2 justify-end py-9 ">
-          <Image width={190} height={180} src="/atendante.png" alt="" />
+      <div className="grid grid-cols-2 gap-4">
+        <div className="flex justify-end py-9 bg-gradient-to-r from-blue-500 to-purple-500 rounded-lg p-5 shadow-lg">
+          <Image priority className="w-auto" width={190} height={150} src="/atendante.png" alt="" />
         </div>
-        <div className="flex col-span-2 justify-start">
+        <div className="w-300 h-300 flex justify-start bg-gradient-to-l from-blue-500 to-purple-500 rounded-lg p-5 shadow-lg">
           {Object.entries(peers).map(([peerId, peer]) => (
             <VideoPlayer key={peerId} stream={peer.stream} autoPlay />
           ))}
@@ -61,7 +60,7 @@ export default function RoomCallPage({ params }: RoomPageProps) {
             <Audio hasInitialAudio={hasInitialAudio} />
             {!clickInteract && (
               <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50">
-                <div className="bg-white p-6 rounded-lg shadow-lg">
+                <div className="bg-white p-6 rounded-lg shadow-lg text-black">
                   <p>Sua câmera está ligada? Se o vídeo não iniciou atualize a página</p>
                   <button
                     className="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-700"
