@@ -1,23 +1,24 @@
 import { FFmpeg } from '@ffmpeg/ffmpeg'
-// // import coreURL from '../ffmpeg/ffmpeg-core.js?url'
-// // import wasmURL from '../ffmpeg/ffmpeg-core.wasm?url'
-// // import workerURL from '../ffmpeg/ffmpeg-worker.js?url'
+import { toBlobURL } from '@ffmpeg/util';
 
 let ffmpeg: FFmpeg | null
 
 export async function getFFmpeg() {
+
   if (ffmpeg) return ffmpeg
+
+  const coreURL = await toBlobURL('../ffmpeg/ffmpeg-core.js', 'text/javascript')
+  const wasmURL = await toBlobURL('../ffmpeg/ffmpeg-core.wasm', 'application/wasm')
+  const workerURL = await toBlobURL('../ffmpeg/ffmpeg-worker.js', 'text/javascript')
 
   ffmpeg = new FFmpeg()
 
   if (!ffmpeg.loaded) {
-    // await ffmpeg.load({
-    //   coreURL,
-    //   wasmURL,
-    //   workerURL
-    // })
-
-    await ffmpeg.load()
+    await ffmpeg.load({
+      coreURL,
+      wasmURL,
+      workerURL
+    })
   }
 
   return ffmpeg
