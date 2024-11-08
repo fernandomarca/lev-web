@@ -10,10 +10,6 @@ export function Audio({ hasInitialAudio }: { hasInitialAudio: boolean }) {
   const [played, setPlayed] = useState<Set<string>>(new Set<string>([]));
 
   const play_audio = useCallback(async () => {
-    // if (isPlaying) {
-    //   console.log("audio is already playing")
-    //   return;
-    // }
     const audioQueue = Array.from(to_play).filter(file => !played.has(file));
     if (audioRef.current && audioQueue.length > 0) {
       const file = audioQueue.shift() as string;
@@ -23,11 +19,13 @@ export function Audio({ hasInitialAudio }: { hasInitialAudio: boolean }) {
         audioRef.current.load();
         audioRef.current.play().catch(error => {
           console.error("Erro ao reproduzir áudio:", error);
+          setIsPlaying(false);
         });
         setIsPlaying(true);
         setPlayed(new Set(played.add(file)));
       } catch (error) {
         console.error("play audio error", error)
+        setIsPlaying(false);
       }
       setTimeout(() => {
         fetch('/api/delete_played_audio', {
