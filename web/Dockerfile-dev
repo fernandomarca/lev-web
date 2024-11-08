@@ -10,8 +10,9 @@ COPY . .
 EXPOSE 3000
 
 ENV DATABASE_URL="file:./dev.db"
-ENV SOCKET_SERVER_URL="http://localhost:8080"
-ENV AGENT_SERVER_URL="http://localhost:8000/save_audio/"
+ENV NEXT_PUBLIC_SOCKET_SERVER_URL="http://localhost:8080"
+ENV NEXT_PUBLIC_AGENT_SERVER_URL="http://localhost:8000/save_audio/"
+ENV NEXT_PUBLIC_URL_API="https://lev-server-1011986942225.us-central1.run.app"
 ENV NEXT_TELEMETRY_DISABLED 1
 
 ENV PORT=3000

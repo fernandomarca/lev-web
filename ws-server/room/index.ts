@@ -1,7 +1,7 @@
 import { Socket } from "socket.io";
 import { v7 as uuidV7 } from 'uuid';
 
-const rooms: Record<string, string[]> = {}; // roomId -> [peerId]
+const rooms: Record<string, string[]> = { "0192f985-a0ff-708b-bf16-69aa47f002ac": [] }; // roomId -> [peerId]
 
 interface IRoomParams {
   roomId: string;

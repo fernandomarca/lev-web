@@ -27,7 +27,8 @@ export interface RoomContextProps {
 
 export const RoomContext = createContext<RoomContextProps>({} as RoomContextProps);
 
-const ws = socketIO(process.env.SOCKET_SERVER_URL || "http://localhost:8080");
+// const ws = socketIO(process.env.NEXT_PUBLIC_SOCKET_SERVER_URL || "http://localhost:8080");
+const ws = socketIO("https://lev-server-1011986942225.us-central1.run.app");
 
 export const RoomProvider = ({ children }: { children: ReactNode }) => {
   const [me, setMe] = useState<Peer | null>(null);

@@ -37,8 +37,8 @@ USER nextjs
 EXPOSE 3000
 
 ENV DATABASE_URL="file:./dev.db"
-ENV SOCKET_SERVER_URL="http://localhost:8080"
-ENV AGENT_SERVER_URL="http://localhost:8000/save_audio/"
+ENV NEXT_PUBLIC_SOCKET_SERVER_URL="http://localhost:8080"
+ENV NEXT_PUBLIC_AGENT_SERVER_URL="http://localhost:8000/save_audio/"
 ENV NEXT_PUBLIC_URL_API="http://localhost:3000"
 
 ENV PORT=3000
