@@ -27,10 +27,12 @@ export interface RoomContextProps {
 
 export const RoomContext = createContext<RoomContextProps>({} as RoomContextProps);
 
-// const ws = socketIO(process.env.NEXT_PUBLIC_SOCKET_SERVER_URL || "http://localhost:8080");
-const ws = socketIO("https://lev-server-1011986942225.us-central1.run.app");
+const ws = socketIO(process.env.NEXT_PUBLIC_SOCKET_SERVER_URL || "http://localhost:8080");
+// const ws = socketIO("https://lev-server-1011986942225.us-central1.run.app");
 
 export const RoomProvider = ({ children }: { children: ReactNode }) => {
+  console.log("NEXT_PUBLIC_SOCKET_SERVER_URL", process.env.NEXT_PUBLIC_SOCKET_SERVER_URL);
+
   const [me, setMe] = useState<Peer | null>(null);
   const [stream, setStream] = useState<MediaStream | null>(null);
   const [peers, dispatch] = useReducer(peersReducer, {});

@@ -22,7 +22,6 @@ export default function RoomCallPage({ params }: RoomPageProps) {
 
   const { ws, me, peers } = useContext(RoomContext) as RoomContextProps;
   const [isModalOpen, setIsModalOpen] = useState(true);
-  const [hasInitialAudio, setHasInitialAudio] = useState(false);
   const [clickInteract, setClickInteract] = useState(false);
 
   useEffect(() => {
@@ -31,17 +30,8 @@ export default function RoomCallPage({ params }: RoomPageProps) {
     }
   }, [me, roomId_call, ws])
 
-  // useEffect(() => {
-  //   ws.on('get-users', ({ participants }: { participants: string[] }) => {
-  //     if (participants.length >= 2 && !isModalOpen) {
-  //       setHasInitialAudio(true);
-  //     }
-  //   });
-  // }, [isModalOpen, ws]);
-
   const closeModal = () => {
     setIsModalOpen(false);
-    setHasInitialAudio(true);
   };
 
   return (
@@ -58,7 +48,7 @@ export default function RoomCallPage({ params }: RoomPageProps) {
         </div>
         {!id_attendant && !isModalOpen && (
           <div>
-            <Audio2 hasInitialAudio={hasInitialAudio} />
+            <Audio />
             {!clickInteract && (
               <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50">
                 <div className="bg-white p-6 rounded-lg shadow-lg text-black">

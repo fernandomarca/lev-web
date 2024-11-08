@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 
-export function Audio2({ hasInitialAudio }: { hasInitialAudio: boolean }) {
+export function Audio2() {
   const audioRef = useRef<HTMLAudioElement>(null);
   const [audioFiles, setAudioFiles] = useState<string[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);

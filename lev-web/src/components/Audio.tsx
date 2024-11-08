@@ -16,7 +16,6 @@ export function Audio({ hasInitialAudio }: { hasInitialAudio: boolean }) {
       try {
         console.log("playing audioSrc", file)
         audioRef.current.src = file;
-        audioRef.current.load();
         audioRef.current.play().catch(error => {
           console.error("Erro ao reproduzir áudio:", error);
           setIsPlaying(false);
@@ -67,12 +66,6 @@ export function Audio({ hasInitialAudio }: { hasInitialAudio: boolean }) {
     console.log("handleEnded")
     setIsPlaying(false);
   };
-
-  useEffect(() => {
-    if (audioRef.current) {
-      audioRef.current.addEventListener('ended', handleEnded);
-    }
-  }, []);
 
   return (
     <audio
