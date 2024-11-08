@@ -14,7 +14,8 @@ export const config = {
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
   if (req.method === 'POST') {
-    const uploadDir = path.join(process.cwd(), 'public', 'temp', 'uploads');
+    const uploadDir = path.join(process.cwd(), 'public');
+    // const uploadDir = path.join(process.cwd(), 'public', 'temp', 'uploads');
     const form = formidable({
       uploadDir,
       keepExtensions: true,
