@@ -25,7 +25,7 @@ import fs from 'node:fs';
 // }
 
 export default function handler(req: NextApiRequest, res: NextApiResponse) {
-  const directoryPath = path.join(process.cwd(), 'public');
+  const directoryPath = path.join(process.cwd(), 'src', 'uploads');
   fs.readdir(directoryPath, (err, files) => {
     if (err) {
       return res.status(500).json({ error: 'Unable to scan directory' });

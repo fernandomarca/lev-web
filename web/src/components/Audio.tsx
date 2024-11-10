@@ -9,7 +9,7 @@ export function Audio() {
   const [played, setPlayed] = useState<Set<string>>(new Set<string>([]));
 
   const fetchAudioBuffer = async (file: string) => {
-    const response = await fetch(`/${file}`);
+    const response = await fetch(`/api/get_audio?file=${file}`);
     if (!response.ok) {
       setIsPlaying(false);
       console.log(`Failed to fetch ${file}: ${response.statusText}`);

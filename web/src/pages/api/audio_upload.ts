@@ -14,8 +14,7 @@ export const config = {
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
   if (req.method === 'POST') {
-    const uploadDir = path.join(process.cwd(), 'public');
-    // const uploadDir = path.join(process.cwd(), 'public', 'temp', 'uploads');
+    const uploadDir = path.join(process.cwd(), 'src', 'uploads');
     const form = formidable({
       uploadDir,
       keepExtensions: true,
@@ -46,7 +45,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       });
     });
   } else {
-    res.setHeader('Allow', ['GET']);
+    res.setHeader('Allow', ['POST']);
     return res.status(405).json({ message: 'Method not allowed' });
   }
 };

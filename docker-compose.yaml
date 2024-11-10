@@ -2,7 +2,7 @@ services:
   app:
     build:
       context: "./web"
-      dockerfile: Dockerfile-dev
+      dockerfile: Dockerfile
     container_name: app-next
     ports:
       - "3000:3000"

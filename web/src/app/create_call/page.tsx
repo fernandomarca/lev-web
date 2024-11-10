@@ -14,8 +14,8 @@ export default function CreateCallPage() {
 
   useEffect(() => {
     ws.on('room-created', ({ roomId }) => {
-      setLik(`${process.env.NEXT_PUBLIC_URL_API}/call/${roomId}`);
-      setLikAttendant(`${process.env.NEXT_PUBLIC_URL_API}/call/${roomId}/attendant`);
+      setLik(`${window.location.origin}/call/${roomId}`);
+      setLikAttendant(`${window.location.origin}/call/${roomId}/attendant`);
     });
   }, [ws]);
 
