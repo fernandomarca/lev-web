@@ -4,7 +4,7 @@ import { convertVideoToAudio } from '@/utils/convert_video';
 import React, { forwardRef, useEffect, useRef } from 'react';
 
 const Video = forwardRef<HTMLVideoElement>((props, ref) => (
-  <video ref={ref} autoPlay playsInline style={{ width: '300px', height: '300px' }} />
+  <video ref={ref} autoPlay playsInline muted style={{ width: '300px', height: '300px' }} />
 ));
 
 Video.displayName = 'Video';

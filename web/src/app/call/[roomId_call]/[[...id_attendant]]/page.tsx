@@ -38,10 +38,10 @@ export default function RoomCallPage({ params }: RoomPageProps) {
     <div >
       <PermissionModal isOpen={isModalOpen} onRequestClose={closeModal} />
       <div className="grid grid-cols-2 gap-4">
-        <div className="flex justify-end py-9 bg-gradient-to-r from-blue-500 to-purple-500 rounded-lg p-5 shadow-lg">
-          <Image priority className="w-auto" width={190} height={150} src="/atendante.png" alt="" />
+        <div className="flex justify-end bg-gradient-to-r from-blue-500 to-purple-500 rounded-lg p-5 shadow-lg">
+          <Image priority className="w-[250px] h-[250px] mt-3" width={250} height={250} src="/atendante.png" alt="" />
         </div>
-        <div className="w-300 h-300 flex justify-start bg-gradient-to-l from-blue-500 to-purple-500 rounded-lg p-5 shadow-lg">
+        <div className="flex justify-start bg-gradient-to-l from-blue-500 to-purple-500 rounded-lg p-5 shadow-lg">
           {Object.entries(peers).map(([peerId, peer]) => (
             <VideoPlayer key={peerId} stream={peer.stream} autoPlay />
           ))}
