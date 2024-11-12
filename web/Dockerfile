@@ -8,6 +8,10 @@ RUN npm install
 
 COPY . .
 
+ENV DATABASE_URL="file:./dev.db"
+ENV NEXT_PUBLIC_SOCKET_SERVER_URL="https://lev-server-1011986942225.us-central1.run.app"
+ENV NEXT_PUBLIC_AGENT_SERVER_URL="https://levbot-1011986942225.us-central1.run.app/save_audio/"
+
 RUN npm run build
 
 RUN npm prune --production
