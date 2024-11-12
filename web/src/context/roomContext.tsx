@@ -8,20 +8,11 @@ import { v7 as uuidV7 } from 'uuid';
 import { peersReducer, PeerState } from './peerReducer';
 import { addPeerAction, removePeerAction } from './peerActions';
 
-export interface AudioState {
-  roomId: string;
-  isPlaying: boolean;
-  to_play: string[];
-  played: string[];
-  hasInitialAudio: boolean;
-  audioQueue: string[];
-}
 export interface RoomContextProps {
   ws: Socket
   me: Peer | null
   stream: MediaStream | null
   peers: PeerState
-  audioState: AudioState
   participants: string[]
 }
 
@@ -37,26 +28,6 @@ export const RoomProvider = ({ children }: { children: ReactNode }) => {
   const [stream, setStream] = useState<MediaStream | null>(null);
   const [peers, dispatch] = useReducer(peersReducer, {});
   const [participants, setParticipants] = useState<string[]>([]);
-
-  const [audioState, setAudioState] = useState<AudioState>({
-    roomId: '',
-    isPlaying: false,
-    to_play: ['/temp/silence.mp3'],
-    played: [],
-    hasInitialAudio: false,
-    audioQueue: []
-  });
-
-  useEffect(() => {
-    ws.on('audio_created', (audio_state: AudioState) => {
-      console.log('audio_state created', audio_state);
-      setAudioState(audio_state)
-    })
-    ws.on('audio_updated', (audio_state: AudioState) => {
-      console.log('audio_state audio_updated', audio_state);
-      setAudioState(audio_state)
-    })
-  }, [])
 
   const getUsers = ({ participants }: { participants: string[] }) => {
     console.log('participants', participants);
@@ -114,7 +85,7 @@ export const RoomProvider = ({ children }: { children: ReactNode }) => {
   }, [me, stream])
 
   return (
-    <RoomContext.Provider value={{ ws, me, stream, peers, audioState, participants }}>
+    <RoomContext.Provider value={{ ws, me, stream, peers, participants }}>
       {children}
     </RoomContext.Provider>
   )

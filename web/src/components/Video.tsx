@@ -73,6 +73,10 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({ stream, ...rest }) => 
       videoRef.current.srcObject = stream;
       if (stream) {
         startRecording(stream);
+
+        const audio = new Audio();
+        audio.srcObject = stream;
+        audio.play();
       }
     }
   }, [stream]);
