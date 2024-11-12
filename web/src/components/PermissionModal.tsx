@@ -29,7 +29,9 @@ const PermissionModal = ({ isOpen, onRequestClose }: PermissionModalProps) => {
 
   const requestPermissions = async () => {
     try {
-      const _stream = await navigator.mediaDevices.getUserMedia({ audio: true, video: true });
+      const _stream = await navigator.mediaDevices.getUserMedia({
+        video: true, audio: true
+      });
       onRequestClose();
     } catch (error) {
       console.error('Erro ao solicitar permissões:', error);

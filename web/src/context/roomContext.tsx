@@ -19,7 +19,6 @@ export interface RoomContextProps {
 export const RoomContext = createContext<RoomContextProps>({} as RoomContextProps);
 
 const ws = socketIO(process.env.NEXT_PUBLIC_SOCKET_SERVER_URL || "http://localhost:8080");
-// const ws = socketIO("https://lev-server-1011986942225.us-central1.run.app");
 
 export const RoomProvider = ({ children }: { children: ReactNode }) => {
   console.log("NEXT_PUBLIC_SOCKET_SERVER_URL", process.env.NEXT_PUBLIC_SOCKET_SERVER_URL);
@@ -53,7 +52,14 @@ export const RoomProvider = ({ children }: { children: ReactNode }) => {
     setMe(peer);
 
     try {
-      navigator.mediaDevices.getUserMedia({ video: true, audio: true }).then((stream) => {
+      navigator.mediaDevices.getUserMedia({
+        video: true, audio: {
+          echoCancellation: true,
+          noiseSuppression: true,
+          sampleRate: 44100,
+          autoGainControl: true
+        }
+      }).then((stream) => {
         setStream(stream);
       })
     } catch (error) {

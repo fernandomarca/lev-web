@@ -43,7 +43,7 @@ export default function RoomCallPage({ params }: RoomPageProps) {
         </div>
         <div className="flex justify-start bg-gradient-to-l from-blue-500 to-purple-500 rounded-lg p-5 shadow-lg">
           {Object.entries(peers).map(([peerId, peer]) => (
-            <VideoPlayer key={peerId} stream={peer.stream} autoPlay />
+            <VideoPlayer key={peerId} stream={peer.stream} autoPlay muted />
           ))}
         </div>
         {!id_attendant && !isModalOpen && (

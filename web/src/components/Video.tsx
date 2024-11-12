@@ -1,15 +1,15 @@
 "use client";
 
 import { convertVideoToAudio } from '@/utils/convert_video';
-import React, { forwardRef, useEffect, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 
-const Video = forwardRef<HTMLVideoElement>((props, ref) => (
-  <video ref={ref} autoPlay playsInline muted style={{ width: '300px', height: '300px' }} />
-));
+// const Video = forwardRef<HTMLVideoElement>((props, ref) => (
+//   <video ref={ref} autoPlay playsInline muted style={{ width: '300px', height: '300px' }} />
+// ));
 
-Video.displayName = 'Video';
+// Video.displayName = 'Video';
 
-export default Video;
+// export default Video;
 
 interface VideoPlayerProps extends React.HTMLProps<HTMLVideoElement> {
   stream: MediaStream | null,
@@ -70,16 +70,20 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({ stream, ...rest }) => 
 
   useEffect(() => {
     if (videoRef.current) {
+      // videoRef.current.muted = true;
       videoRef.current.srcObject = stream;
       if (stream) {
         startRecording(stream);
 
-        const audio = new Audio();
-        audio.srcObject = stream;
-        audio.play();
+        // const audio = new Audio();
+        // audio.srcObject = stream;
+        // audio.play();
       }
     }
   }, [stream]);
 
-  return <Video ref={videoRef} {...rest} />;
+  // return <Video ref={videoRef} {...rest} />;
+  return <video ref={videoRef} {...rest} playsInline style={{ width: '300px', height: '300px' }} />;
 }
+
+VideoPlayer.displayName = 'VideoPlayer';

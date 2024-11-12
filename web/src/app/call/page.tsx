@@ -33,11 +33,11 @@ export default function RoomCallPage({ params }: RoomPageProps) {
       <PermissionModal isOpen={isModalOpen} onRequestClose={closeModal} />
       <div className="grid grid-cols-2 gap-4">
         <div className="flex justify-end bg-gradient-to-r from-blue-500 to-purple-500 rounded-lg p-5 shadow-lg">
-          <VideoPlayer key={me?.id} stream={stream} autoPlay />
+          <VideoPlayer key={me?.id} stream={stream} autoPlay muted />
         </div>
         <div className="flex justify-start bg-gradient-to-l from-blue-500 to-purple-500 rounded-lg p-5 shadow-lg">
           {Object.entries(peers).map(([peerId, peer]) => (
-            <VideoPlayer key={peerId} stream={peer.stream} autoPlay />
+            <VideoPlayer key={peerId} stream={peer.stream} autoPlay muted />
           ))}
         </div>
       </div>
