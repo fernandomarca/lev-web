@@ -28,7 +28,7 @@ export default function RoomCallPage({ params }: RoomPageProps) {
     if (me) {
       ws.emit('join-room-call', { roomId: roomId_call, peerId: me.id });
     }
-  }, [me, roomId_call, ws])
+  }, [me])
 
   const closeModal = () => {
     setIsModalOpen(false);

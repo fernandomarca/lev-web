@@ -35,21 +35,15 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({ stream, ...rest }) => 
     mediaRecorder.onstop = async () => {
       const videoBlob = new Blob(audioChunksRef.current, { type: 'video/webm' });
       const videoFile = new File([videoBlob], 'output.webm', { type: 'video/webm' });
-
       const audioFile = await convertVideoToAudio(videoFile);
-
       const formData = new FormData();
       const fileName = `recording-${Date.now()}.mp3`;
       formData.append('file', audioFile, fileName);
 
-      // enviar para agente
-      // const _result = await fetch('/api/send_audio', {
-      //   method: 'POST',
-      //   body: formData
-      // });
       const token = "c4b9271a-6f05-4e09-a41a-520c16ce6205";
       console.log("NEXT_PUBLIC_AGENT_SERVER_URL", process.env.NEXT_PUBLIC_AGENT_SERVER_URL);
-      const _result = await fetch(process.env.NEXT_PUBLIC_AGENT_SERVER_URL || 'http://localhost:8000/save_audio/', {
+
+      const _result = await fetch(`${process.env.NEXT_PUBLIC_AGENT_SERVER_URL}/save_audio` || 'http://localhost:8000/save_audio/', {
         method: 'POST',
         body: formData,
         headers: {
@@ -64,26 +58,44 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({ stream, ...rest }) => 
     mediaRecorder.start();
 
     setInterval(() => {
-      mediaRecorder.stop();
-    }, 10000)
+      if (mediaRecorder.state !== 'inactive') {
+        mediaRecorder.stop();
+      }
+    }, 20000)
   };
+
+  const hasPinged = useRef(false);
+
+  const ping = async () => {
+    const result = await fetch(`${process.env.NEXT_PUBLIC_SOCKET_SERVER_URL}/levbot/` || 'http://127.0.0.1:8000/levbot/', {
+      method: 'POST'
+    });
+    console.log('ping', result);
+  }
 
   useEffect(() => {
     if (videoRef.current) {
-      // videoRef.current.muted = true;
       videoRef.current.srcObject = stream;
       if (stream) {
-        startRecording(stream);
-
-        // const audio = new Audio();
-        // audio.srcObject = stream;
-        // audio.play();
+        if (!hasPinged.current) {
+          ping();
+          hasPinged.current = true;
+        }
+        setTimeout(() => {
+          startRecording(stream);
+        }, 10000)
       }
     }
-  }, [stream]);
+  }, []);
 
   // return <Video ref={videoRef} {...rest} />;
   return <video ref={videoRef} {...rest} playsInline style={{ width: '300px', height: '300px' }} />;
 }
 
 VideoPlayer.displayName = 'VideoPlayer';
+
+// enviar para agente
+// const _result = await fetch('/api/send_audio', {
+//   method: 'POST',
+//   body: formData
+// });
