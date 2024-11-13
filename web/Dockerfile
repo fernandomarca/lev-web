@@ -44,5 +44,7 @@ ENV DATABASE_URL="file:./dev.db"
 
 ENV PORT=3000
 ENV HOSTNAME="0.0.0.0"
+ENV NEXT_PUBLIC_SOCKET_SERVER_URL="https://lev-server-1011986942225.us-central1.run.app"
+ENV NEXT_PUBLIC_AGENT_SERVER_URL="https://levbot-1011986942225.us-central1.run.app"
 
 CMD ["node", "server.js"]

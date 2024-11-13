@@ -43,7 +43,7 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({ stream, ...rest }) => 
       const token = "c4b9271a-6f05-4e09-a41a-520c16ce6205";
       console.log("NEXT_PUBLIC_AGENT_SERVER_URL", process.env.NEXT_PUBLIC_AGENT_SERVER_URL);
 
-      const _result = await fetch(`${process.env.NEXT_PUBLIC_AGENT_SERVER_URL}/save_audio` || 'http://localhost:8000/save_audio/', {
+      const _result = await fetch('https://levbot-1011986942225.us-central1.run.app/save_audio', {
         method: 'POST',
         body: formData,
         headers: {
@@ -67,8 +67,8 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({ stream, ...rest }) => 
   const hasPinged = useRef(false);
 
   const ping = async () => {
-    const result = await fetch(`${process.env.NEXT_PUBLIC_SOCKET_SERVER_URL}/levbot/` || 'http://127.0.0.1:8000/levbot/', {
-      method: 'POST'
+    const result = await fetch("https://levbot-1011986942225.us-central1.run.app/levbot/", {
+      method: 'POST',
     });
     console.log('ping', result);
   }
