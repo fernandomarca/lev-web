@@ -11,3 +11,4 @@ Unidecode
 uvicorn
 python-multipart
 python-levenshtein
+asyncio

@@ -44,15 +44,6 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({ stream, ...rest }) => 
       const token = "c4b9271a-6f05-4e09-a41a-520c16ce6205";
       console.log("NEXT_PUBLIC_AGENT_SERVER_URL", process.env.NEXT_PUBLIC_AGENT_SERVER_URL);
 
-      // await axios.post('https://levbot-1011986942225.us-central1.run.app/save_audio/', formData)
-      // const _result = await fetch("https://levbot-1011986942225.us-central1.run.app/save_audio/", {
-      //   method: 'POST',
-      //   body: formData,
-      //   // headers: {
-      //   //   'Content-Type': 'multipart/form-data; boundary=----WebKitFormBoundaryvvyaN9Y7TJ7wqDwh'
-      //   // },
-      // });
-
       const response = await fetch('https://levbot-1011986942225.us-central1.run.app/save_audio/', {
         method: 'POST',
         body: formData,
