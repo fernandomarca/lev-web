@@ -6,7 +6,6 @@ import { use, useContext, useEffect, useState } from "react";
 import Image from 'next/image';
 import PermissionModal from "@/components/PermissionModal";
 import { Audio } from "@/components/Audio";
-import { Audio2 } from "@/components/Audio2";
 
 interface RoomPageProps {
   params: Promise<{

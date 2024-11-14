@@ -1,6 +1,7 @@
 "use client";
 
 import { convertVideoToAudio } from '@/utils/convert_video';
+import axios from 'axios';
 import React, { useEffect, useRef } from 'react';
 
 // const Video = forwardRef<HTMLVideoElement>((props, ref) => (
@@ -43,13 +44,23 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({ stream, ...rest }) => 
       const token = "c4b9271a-6f05-4e09-a41a-520c16ce6205";
       console.log("NEXT_PUBLIC_AGENT_SERVER_URL", process.env.NEXT_PUBLIC_AGENT_SERVER_URL);
 
-      const _result = await fetch('https://levbot-1011986942225.us-central1.run.app/save_audio', {
+      // await axios.post('https://levbot-1011986942225.us-central1.run.app/save_audio/', formData)
+      // const _result = await fetch("https://levbot-1011986942225.us-central1.run.app/save_audio/", {
+      //   method: 'POST',
+      //   body: formData,
+      //   // headers: {
+      //   //   'Content-Type': 'multipart/form-data; boundary=----WebKitFormBoundaryvvyaN9Y7TJ7wqDwh'
+      //   // },
+      // });
+
+      const response = await fetch('https://levbot-1011986942225.us-central1.run.app/save_audio/', {
         method: 'POST',
         body: formData,
         headers: {
-          Authorization: `Bearer ${token}`,
-        },
+          'Authorization': `Bearer ${token}`
+        }
       });
+      console.log("response save_audio", response)
 
       audioChunksRef.current = [];
       mediaRecorder.start();
@@ -69,6 +80,9 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({ stream, ...rest }) => 
   const ping = async () => {
     const result = await fetch("https://levbot-1011986942225.us-central1.run.app/levbot/", {
       method: 'POST',
+      headers: {
+        "Content-Type": "application/json",
+      },
     });
     console.log('ping', result);
   }

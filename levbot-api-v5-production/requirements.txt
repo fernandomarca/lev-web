@@ -1,0 +1,13 @@
+fastapi
+fuzzywuzzy
+jellyfish
+jsonschema
+Metafone
+openai
+pydantic
+python-dotenv
+Requests
+Unidecode
+uvicorn
+python-multipart
+python-levenshtein

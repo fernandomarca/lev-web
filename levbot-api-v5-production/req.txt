@@ -1,0 +1,11 @@
+fastapi
+numpy
+openai
+openai_whisper
+pydantic
+python-dotenv
+Requests
+soundfile
+tiktoken
+uvicorn
+python-multipart
