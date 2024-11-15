@@ -5,9 +5,10 @@ import React, { useEffect, useRef } from 'react';
 
 interface VideoPlayerProps extends React.HTMLProps<HTMLVideoElement> {
   stream: MediaStream | null,
+  record?: boolean
 }
 
-export const VideoPlayerSelf: React.FC<VideoPlayerProps> = ({ stream, ...rest }) => {
+export const VideoPlayerSelf: React.FC<VideoPlayerProps> = ({ stream, record, ...rest }) => {
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const audioChunksRef = useRef<Blob[]>([]);
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -60,13 +61,13 @@ export const VideoPlayerSelf: React.FC<VideoPlayerProps> = ({ stream, ...rest })
   useEffect(() => {
     if (videoRef.current) {
       videoRef.current.srcObject = stream;
-      if (stream) {
+      if (stream && record) {
         setTimeout(() => {
           startRecording(stream);
         }, 10000)
       }
     }
-  }, []);
+  }, [record]);
   return <video ref={videoRef} {...rest} playsInline style={{ width: '300px', height: '300px' }} />;
 }
 

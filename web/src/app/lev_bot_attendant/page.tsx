@@ -49,7 +49,7 @@ export default function RoomCallPage({ params }: RoomPageProps) {
           <Image priority className="w-[250px] h-[250px] mt-3" width={250} height={250} src="/atendante.png" alt="" />
         </div>
         <div className="flex justify-start bg-gradient-to-l from-blue-500 to-purple-500 rounded-lg p-5 shadow-lg">
-          {stream && <VideoPlayerSelf key={me?.id} stream={stream} autoPlay muted />}
+          {stream && <VideoPlayerSelf record={clickInteract} key={me?.id} stream={stream} autoPlay muted />}
         </div>
         {!id_attendant && !isModalOpen && (
           <div>
@@ -57,15 +57,19 @@ export default function RoomCallPage({ params }: RoomPageProps) {
             {!clickInteract && (
               <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50">
                 <div className="bg-white p-6 rounded-lg shadow-lg text-black">
-                  <p>Sua câmera está ligada? Se sua transmissão de vídeo não iniciou atualize a página
-                    se estiver tudo certo clique em {`"Tudo certo"`} para iniciar a chamada.
+                  <p>Sua câmera está ligada? <br />
+                    Se sua transmissão de vídeo não iniciou atualize a página <br />
+                    Se estiver tudo certo clique no botão
+                    <span className="ml-2 font-bold">
+                      {`"Iniciar entrevista"`}
+                    </span>
                   </p>
                   <div className="flex justify-center">
                     <button
                       className="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-700"
                       onClick={() => initCall()}
                     >
-                      Tudo certo
+                      Iniciar entrevista
                     </button>
                   </div>
                 </div>
