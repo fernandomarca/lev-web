@@ -37,7 +37,7 @@ export default function RoomCallPage({ params }: RoomPageProps) {
 
   async function initCall() {
     setClickInteract(true);
-    let result = await ping();
+    const result = await ping();
     console.log('ping', result);
   }
 
@@ -58,7 +58,7 @@ export default function RoomCallPage({ params }: RoomPageProps) {
               <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50">
                 <div className="bg-white p-6 rounded-lg shadow-lg text-black">
                   <p>Sua câmera está ligada? Se sua transmissão de vídeo não iniciou atualize a página
-                    se estiver tudo certo clique em "Tudo certo" para iniciar a chamada.
+                    se estiver tudo certo clique em {`"Tudo certo"`} para iniciar a chamada.
                   </p>
                   <div className="flex justify-center">
                     <button
