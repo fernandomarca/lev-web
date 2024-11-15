@@ -62,8 +62,8 @@ export default function RoomCallPage({ params }: RoomPageProps) {
             </div>
             {
               Object.entries(peers).map(([peerId, peer]) => (
-                <div className="flex justify-start bg-gradient-to-l from-blue-500 to-purple-500 rounded-lg p-5 shadow-lg">
-                  <VideoPlayer key={peerId} stream={peer.stream} autoPlay />
+                <div key={peerId} className="flex justify-start bg-gradient-to-l from-blue-500 to-purple-500 rounded-lg p-5 shadow-lg">
+                  <VideoPlayer stream={peer.stream} autoPlay />
                 </div>
               ))
             }
@@ -78,10 +78,10 @@ export default function RoomCallPage({ params }: RoomPageProps) {
             </div>
             {
               Object.entries(peers).map(([peerId, peer]) => (
-                <div className="flex flex-col items-center bg-gradient-to-l from-blue-500 to-purple-500 rounded-lg p-5 shadow-lg">
+                <div key={peerId} className="flex flex-col items-center bg-gradient-to-l from-blue-500 to-purple-500 rounded-lg p-5 shadow-lg">
                   {peer.stream && <>
                     <p>Atendante</p>
-                    <VideoPlayer key={peerId} stream={peer.stream} autoPlay muted />
+                    <VideoPlayer stream={peer.stream} autoPlay muted />
                   </>}
                 </div>
               ))
