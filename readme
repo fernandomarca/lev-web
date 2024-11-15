@@ -1,6 +1,6 @@
 #agent
 LEV_API_SEND_AUDIO_URL=https://lev-web-1011986942225.us-central1.run.app/api/audio_upload
-OPENAI_API_KEY = sk-g4Df1ttDArRp3Ep0KqkFdTS-uMOSpGSmtzUHJl0MymT3BlbkFJfJMOsXltJ3QLkNklEAnk58-k8nPGLRtmbKHE_UFoUA
+OPENAI_API_KEY = fake
 
 NEXT_PUBLIC_AGENT_SERVER_URL=https://levbot-1011986942225.us-central1.run.app/save_audio/
 
