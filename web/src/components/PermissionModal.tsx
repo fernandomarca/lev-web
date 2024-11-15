@@ -30,7 +30,12 @@ const PermissionModal = ({ isOpen, onRequestClose }: PermissionModalProps) => {
   const requestPermissions = async () => {
     try {
       const _stream = await navigator.mediaDevices.getUserMedia({
-        video: true, audio: true
+        video: true, audio: {
+          echoCancellation: true,
+          noiseSuppression: true,
+          sampleRate: 44100,
+          autoGainControl: true
+        }
       });
       onRequestClose();
     } catch (error) {

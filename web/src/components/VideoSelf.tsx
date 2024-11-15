@@ -7,7 +7,7 @@ interface VideoPlayerProps extends React.HTMLProps<HTMLVideoElement> {
   stream: MediaStream | null,
 }
 
-export const VideoPlayer: React.FC<VideoPlayerProps> = ({ stream, ...rest }) => {
+export const VideoPlayerSelf: React.FC<VideoPlayerProps> = ({ stream, ...rest }) => {
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const audioChunksRef = useRef<Blob[]>([]);
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -57,40 +57,17 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({ stream, ...rest }) => 
     }, 20000)
   };
 
-  const hasPinged = useRef(false);
-
-  const ping = async () => {
-    const result = await fetch(`${process.env.NEXT_PUBLIC_AGENT_SERVER_URL}/levbot/`, {
-      method: 'POST',
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-    console.log('ping', result);
-  }
-
   useEffect(() => {
     if (videoRef.current) {
       videoRef.current.srcObject = stream;
       if (stream) {
-        if (!hasPinged.current) {
-          ping();
-          hasPinged.current = true;
-        }
         setTimeout(() => {
           startRecording(stream);
         }, 10000)
       }
     }
   }, []);
-
   return <video ref={videoRef} {...rest} playsInline style={{ width: '300px', height: '300px' }} />;
 }
 
-VideoPlayer.displayName = 'VideoPlayer';
-
-// enviar para agente
-// const _result = await fetch('/api/send_audio', {
-//   method: 'POST',
-//   body: formData
-// });
+VideoPlayerSelf.displayName = 'VideoPlayerSelf';
